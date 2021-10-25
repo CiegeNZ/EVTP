@@ -1,0 +1,26 @@
+type TripBreakdown @model @auth(rules: [{allow: public}]) @key(name: "byTrip", fields: ["tripID"]) {
+  id: ID!
+  timestamp: AWSTimestamp
+  latlng: String
+  batteryStatus: String
+  batteryCharge: String
+  speed: Float
+  force: String
+  elevation: String
+  acceleration: String
+  tripID: ID
+}
+
+type Trip @model @auth(rules: [{allow: public}]) @key(name: "byUsers", fields: ["usersID"]) {
+  id: ID!
+  start: String
+  end: String
+  usersID: ID
+  TripBreakdowns: [TripBreakdown] @connection(keyName: "byTrip", fields: ["id"])
+}
+
+type Users @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  Trips: [Trip] @connection(keyName: "byUsers", fields: ["id"])
+}
